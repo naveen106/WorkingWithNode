@@ -1,0 +1,16 @@
+{
+  "name": "workingwithnode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Naveen",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "csv-parse": "^5.0.4"
+  }
+}
