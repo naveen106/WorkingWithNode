@@ -1,15 +1,49 @@
 const http = require('http');
 const PORT = 3000;
-const server = http.createServer((req, res) => {
+const friends = [
+   {
+      id: 0,
+      name: "Alfred Nobel"
+   },
 
-   if(req.url === '/home'){
+   {
+      id: 1,
+      name: "Sir Isaac Newton"
+   },
+
+   {
+      id: 2,
+      name: "Albert Einstein"
+   }
+]
+const server = http.createServer((req, res) => {
+   
+   const categories = req.url.split('/');  //formed array, ["", 'friends', '1'] //if index/id passed is '1'
+   let friendIndex;
+   if (categories.length > 3) {
+      res.statusCode = 404;
+      res.end();
+   }
+   (categories.length > 2) ? friendIndex = +categories[2] : friendIndex = null;   
+      
+   if(categories[1] === 'friends'){
       res.writeHead(200, {
          'Content-Type': 'application/json'
       });
-      res.end(JSON.stringify({ id: 1, name: `Sir Issac Newton` }));
+      
+      if (friendIndex<3)
+         res.end(JSON.stringify(friends[friendIndex]));
+      
+      else if(categories.length > 3) {
+         res.statusCode = 404;
+         res.end();
+      }
+         
+      else
+         res.end(JSON.stringify(friends));
    }
    
-   if (req.url === '/message') { 
+   if (categories[1] === 'message') { 
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/html');
       res.write('<html>');
@@ -27,8 +61,6 @@ const server = http.createServer((req, res) => {
       res.statusCode = 404;
       res.end();
    }
-
-
 });
 
 server.listen(PORT, () => { console.log(`Listening on port ${PORT}`)});  //localhost
