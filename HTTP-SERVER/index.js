@@ -1,3 +1,4 @@
+//const { resolveSoa } = require('dns');
 const http = require('http');
 const PORT = 3000;
 const friends = [
@@ -17,33 +18,55 @@ const friends = [
    }
 ]
 const server = http.createServer((req, res) => {
+ 
+   const address = req.url.split('/');  //formed array, ["", 'friends', '1'] //if index/id passed is '1'
+   console.log(address);
    
-   const categories = req.url.split('/');  //formed array, ["", 'friends', '1'] //if index/id passed is '1'
-   let friendIndex;
-   if (categories.length > 3) {
+   if (address.length > 3) {
       res.statusCode = 404;
       res.end();
    }
-   (categories.length > 2) ? friendIndex = +categories[2] : friendIndex = null;   
-      
-   if(categories[1] === 'friends'){
-      res.writeHead(200, {
-         'Content-Type': 'application/json'
-      });
-      
-      if (friendIndex<3)
+
+   if (req.method == "POST" && adddress[1] === `friends`) {
+      req.on("data", (data) => {
+         const friend = data.toString();
+         console.log(`Request: ` + data);
+         friends.push(JSON.parse(friend));
+      })
+   }
+   
+   let friendIndex=null;  
+   console.log(typeof (address[2]));
+
+   if (address[2] !== '' && address.length === 3)
+      friendIndex = +address[2];
+
+   if(req.method === "GET" && address[1] === 'friends'){     
+      console.log('friendIndex: '+friendIndex);
+      if (friendIndex != null && friendIndex < friends.length) {
+         res.writeHead(200, {
+            'Content-Type': 'application/json'
+         });
          res.end(JSON.stringify(friends[friendIndex]));
+      }
+            
+      if (friendIndex === null && address.length < 3)
+         res.end(JSON.stringify(friends));         
       
-      else if(categories.length > 3) {
+      else { 
          res.statusCode = 404;
          res.end();
       }
-         
-      else
-         res.end(JSON.stringify(friends));
+
    }
    
-   if (categories[1] === 'message') { 
+   if (req.method === "GET" && address[1] === 'message') { 
+      if (address.length > 2){
+         res.statusCode = 404;
+         res.end();
+         return;
+      }
+      
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/html');
       res.write('<html>');
