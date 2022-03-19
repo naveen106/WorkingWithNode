@@ -20,7 +20,7 @@ const friends = [
 const server = http.createServer((req, res) => {
  
    const address = req.url.split('/');  //formed array, ["", 'friends', '1'] //if index/id passed is '1'
-   console.log(address);
+  // console.log(address);
    
    if (address.length > 3) {
       res.statusCode = 404;
@@ -32,7 +32,8 @@ const server = http.createServer((req, res) => {
          const friend = data.toString();
          console.log(`Request: ` + data);
          friends.push(JSON.parse(friend));
-      })
+      });
+      req.pipe(res);
    }
    
    let friendIndex=null;  
@@ -42,7 +43,7 @@ const server = http.createServer((req, res) => {
       friendIndex = +address[2];
 
    if(req.method === "GET" && address[1] === 'friends'){     
-      console.log('friendIndex: '+friendIndex);
+   //   console.log('friendIndex: '+friendIndex);
       if (friendIndex != null && friendIndex < friends.length) {
          res.writeHead(200, {
             'Content-Type': 'application/json'
@@ -86,4 +87,4 @@ const server = http.createServer((req, res) => {
    }
 });
 
-server.listen(PORT, () => { console.log(`Listening on port ${PORT}`)});  //localhost
+server.listen(PORT, () => { console.log(`Listening on port ${PORT}...`)});  //localhost
