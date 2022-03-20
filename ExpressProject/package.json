@@ -2,16 +2,14 @@
   "name": "expressproject",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "watch": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  
   "devDependencies": {
     "nodemon": "^2.0.15"
   },
-
   "author": "NaveenKumar",
   "license": "ISC"
 }
