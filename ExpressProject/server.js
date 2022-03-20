@@ -22,7 +22,36 @@ const friends = [
    }
 ];
 
-///no need to use chains of chains of promises and less error prone code.
+
+
+
+/////////////////// MIDDLEWARES
+//this runs and after next() executes, it goes to next Middleware(if there is),
+//otherwise it means it has reached the ENDPOINT. It runs the corresponding method(GET,POST etc) with given url.
+//meaning sends url according our defined way.
+
+app.use((req, res, next) => {    //.use() function to create middleware.
+
+   const start = Date.now();
+   next();
+   
+   console.log(`Method: ${req.method}, Url: ${req.url}`);   
+   console.log(`Time taken: ${(Date.now()-start)}ms`);
+});
+ 
+
+// middleware to parse the request data provided as json object for post method.
+app.use(express.json());
+
+
+
+
+
+
+
+
+
+///////////////////SEND RESPONSE FOR GET REQUEST 
 app.get(`/friends`, (req, res) => {
    res.json(friends);
 });
@@ -30,6 +59,7 @@ app.get(`/friends`, (req, res) => {
 app.get(`/friends/:friendId`, (req, resp) => {
    const friendId = +req.params.friendId;
    console.log(friends[friendId]);
+   
    if (friends[friendId])
       resp.json(friends[friendId]);
    
@@ -43,6 +73,38 @@ app.get(`/messages`, (req, response) => {
 })
 
 
+
+
+
+
+
+
+
+
+///POST REQUEST TO ADD FRIENDS (UPLOAD DATA)
+app.post(`/friends`,(req, res) => {
+
+   //if no data is passed to the body || content type is not application/json
+   //express.json() will provide empty object(in place of 'req.body').
+   //therefore, we don't need to specifically check for 'req.body', we can check for 'name' property.
+   if (!req.body.name) {
+      return res.status(400).send({
+         error: 'Missing friend name.'
+      })      
+   }
+
+
+   //app.use(express.json()) middleware will parse json
+   //object and return 'req.body' as object, and then we can get 'name' property of added friend from parsed json file.
+   const newFriend = {
+      name: req.body.name,
+      id: friends.length
+   };
+   
+   //we got the details for our new friend, time to add it to our friends array/list.
+   friends.push(newFriend);
+   res.json(newFriend);
+})
 
 
 
