@@ -2,6 +2,7 @@
 //// see and compare how easy to follow and clean code is written with EXPRESS framework.
 
 const express = require('express');
+const path = require('path');
 const friendsRouter = require('./Routers/friends.router');
 const messagesRouter = require('./Routers/messages.router');
 const app = express();
@@ -26,12 +27,15 @@ app.use((req, res, next) => {
 // middleware to parse the request data provided as json object for post method.
 app.use(express.json());
 
+//serves everything under a specific path. (like this this small index.html file inside public folder). 
+app.use('/site', express.static(path.join(__dirname,'public') )); // '/site', just like '/friends' and '/messages'
+
+
 ///// URL's are handled by ROUTER
-///// CONTROLLER  handles RESPONSES for REQUESTS (manipulates database according to request's need).
+///// CONTROLLER  handles RESPONSES for REQUESTS (manipulates database according to request's need and sends a response).
 ///// MODELS has database.
 
 app.use('/messages', messagesRouter);
 app.use('/friends', friendsRouter);
-
 
 app.listen(PORT, () => { console.log(`Listening on ${PORT}...`) });
