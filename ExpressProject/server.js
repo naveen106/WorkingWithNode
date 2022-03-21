@@ -13,13 +13,14 @@ const PORT = 3000;
 //otherwise it means it has reached the ENDPOINT. It runs the corresponding method(GET,POST etc) with given url.
 //meaning sends url according our defined way and sends the response.
 
-app.use((req, res, next) => {    //.use() function to create middleware.
+app.use((req, res, next) => { 
 
    const start = Date.now();
    next();
    
-   console.log(`Method:${req.method}, Url: ${req.url}`);   
-   console.log(`Time taken: ${(Date.now()-start)}ms\n`);
+   console.log(`\nMethod:${req.method}, Url: ${req.baseUrl}${req.url}`);
+   console.log(`Time taken: ${(Date.now() - start)}ms\n`);
+   return;
 });
 
 // middleware to parse the request data provided as json object for post method.
@@ -31,5 +32,6 @@ app.use(express.json());
 
 app.use('/messages', messagesRouter);
 app.use('/friends', friendsRouter);
+
 
 app.listen(PORT, () => { console.log(`Listening on ${PORT}...`) });
