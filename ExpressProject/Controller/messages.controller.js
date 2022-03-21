@@ -3,5 +3,11 @@ function getMessages(req, response){
 }
 
 function postMessages(req, res) { 
-   console.log(`Updatig data....`); 
+   //console.log(`Updatig data....`); 
+   res.send(`Updating data...`);
 }
+
+module.exports = {
+   getMessages,
+   postMessages
+};
