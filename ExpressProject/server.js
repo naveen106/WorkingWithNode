@@ -19,18 +19,28 @@ app.use((req, res, next) => {
    const start = Date.now();
    next();
    
-   console.log(`\nMethod:${req.method}, Url: ${req.baseUrl}${req.url}`);
-   console.log(`Time taken: ${(Date.now() - start)}ms\n`);
+  console.log(`\nMethod:${req.method}, Url: ${req.baseUrl}${req.url}`);
+  console.log(`Time taken: ${(Date.now() - start)}ms\n`);
+   //console.log('url:' + path.join(__dirname, 'Views'));
    return;
 });
 
+
+app.set('view engine', 'hbs');
+app.set('views', path.join('Views'));
 // middleware to parse the request data provided as json object for post method.
 app.use(express.json());
 
-//serves everything under a specific path. (like this this small index.html file inside public folder). 
-app.use('/site', express.static(path.join(__dirname,'public') )); // '/site', just like '/friends' and '/messages'
+app.get('/', (req, res) => {
+   res.render('index', {
+      "title": 'This image looks beautiful',
+      "header": 'Isn\'t this image really beautiful!',
+   })
+})
 
-
+//serves everything under a specific path.
+app.use('/site', express.static(path.join(__dirname, 'public')));
+ 
 ///// URL's are handled by ROUTER
 ///// CONTROLLER  handles RESPONSES for REQUESTS (manipulates database according to request's need and sends a response).
 ///// MODELS has database.
