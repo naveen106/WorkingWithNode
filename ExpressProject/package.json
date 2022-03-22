@@ -1,8 +1,9 @@
 {
   "name": "expressproject",
   "version": "1.0.0",
-  "description": "",
+  "description": "Express Example project",
   "main": "server.js",
+  "repository": {},
   "scripts": {
     "watch": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +12,8 @@
     "nodemon": "^2.0.15"
   },
   "author": "NaveenKumar",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "hbs": "^4.2.0"
+  }
 }
